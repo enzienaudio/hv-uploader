@@ -10,3 +10,17 @@ Python script for uploading and managing content on the Heavy Cloud Service (htt
 `$ pip install hv-uploader -U`
 
 (Note: this will also update any dependencies)
+
+---
+## Development
+
+### Creating new package distribution
+
+`$ python ./setup.py sdist bdist_wheel`
+
+### Uploading new package version
+
+`$ rm -rf ./dist/`
+
+`$ twine upload dist/* `
+

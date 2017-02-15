@@ -5,21 +5,22 @@ def readme():
         return f.read()
 
 setup(name="hv-uploader",
-      version="1.0",
+      version="2017.02.15",
       description="Uploads content to the Heavy Cloud Service (https://enzienaudio.com).",
       long_description=readme(),
       classifiers=[
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 2.7",
+        "Topic :: Utilities"
       ],
       keywords="procedural audio uploader heavy enzien audio interactive games",
-      url="http://github.com/enzienaudio/hv_uploader",
+      url="http://github.com/enzienaudio/hv-uploader",
       author="Enzien Audio Ltd",
       author_email="info@enzienaudio.com",
       license="MIT",
       packages=["hv_uploader"],
       install_requires=[
-          "markdown",
+          "requests",
       ],
       entry_points={
           "console_scripts": ["hv-uploader=hv_uploader:main"],

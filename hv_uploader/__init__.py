@@ -444,7 +444,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         # a generic catch for any other exception
         exit_code = exit_code if exit_code != ErrorCodes.CODE_OK else ErrorCodes.CODE_EXCEPTION
         print "{0}Error:{1} ({2}) {3}".format(Colours.red, Colours.end, e.__class__, e)
-        print "Getting a weird error? Get the latest uploader at https://enzienaudio.com/static/uploader.py, or check for issues at https://github.com/enzienaudio/heavy/issues."
+        print "Getting a weird error? Get the latest version with 'pip install hv-uploader -U', or check for issues at https://github.com/enzienaudio/heavy/issues."
     finally:
         if temp_dir:
             shutil.rmtree(temp_dir) # delete the temporary directory no matter what

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-# MIT License
-#
-# Copyright (c) 2015-2017 Enzien Audio Ltd
+# Copyright (c) 2015-2017 Enzien Audio, Ltd. (info@enzienaudio.com)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -221,7 +219,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                 # if an owner is not supplied, default to the user name in the token
                 owner = payload["name"]
         except Exception as e:
-            print "The user token is invalid. Generate a new one at https://enzienaudio.com/h/<username>/settings."
+            print "The user token is invalid. Generate a new one at https://enzienaudio.com/h/<username>/settings/."
             exit_code = ErrorCodes.CODE_INVALID_TOKEN
             raise e
 
@@ -247,7 +245,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         if release:
             if not release_override:
                 # check the validity of the current release
-                releases_json = requests.get(urlparse.urljoin(domain, "/a/releases")).json()
+                releases_json = requests.get(urlparse.urljoin(domain, "/a/releases/")).json()
                 if release in releases_json:
                     today = datetime.datetime.now()
                     valid_until = datetime.datetime.strptime(releases_json[release]["validUntil"], "%Y-%m-%d")
@@ -296,7 +294,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
 
         # check if the patch exists already. Ask to create it if it doesn't exist
         r = requests.get(
-            urlparse.urljoin(domain, "/a/patches/{0}/{1}".format(owner, name)),
+            urlparse.urljoin(domain, "/a/patches/{0}/{1}/".format(owner, name)),
             headers={
                 "Accept": "application/json",
                 "Authorization": "Bearer " + token,
@@ -314,7 +312,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                     create_new_patch = (create_new_patch == "y")
                 if create_new_patch:
                     r = requests.post(
-                        urlparse.urljoin(domain, "/a/patches"),
+                        urlparse.urljoin(domain, "/a/patches/"),
                         data={"owner_name":owner, "name":name},
                         headers={
                             "Accept": "application/json",
@@ -342,7 +340,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
 
         # upload the job, get the response back
         r = requests.post(
-            urlparse.urljoin(domain, "/a/patches/{0}/{1}/jobs".format(owner, name)),
+            urlparse.urljoin(domain, "/a/patches/{0}/{1}/jobs/".format(owner, name)),
             data=post_data,
             headers={
                 "Accept": "application/json",
@@ -444,7 +442,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         # a generic catch for any other exception
         exit_code = exit_code if exit_code != ErrorCodes.CODE_OK else ErrorCodes.CODE_EXCEPTION
         print "{0}Error:{1} ({2}) {3}".format(Colours.red, Colours.end, e.__class__, e)
-        print "Getting a weird error? Get the latest uploader at https://enzienaudio.com/static/uploader.py, or check for issues at https://github.com/enzienaudio/heavy/issues."
+        print "Getting a weird error? Get the latest version with 'pip install hv-uploader -U', or check for issues at https://github.com/enzienaudio/heavy/issues."
     finally:
         if temp_dir:
             shutil.rmtree(temp_dir) # delete the temporary directory no matter what

@@ -14,13 +14,12 @@ Python script for uploading and managing content on the Heavy Cloud Service (htt
 ---
 ## Development
 
-### Creating new package distribution
+### Creating and uploading new package version
 
-`$ python ./setup.py sdist bdist_wheel`
-
-### Uploading new package version
+`$ pip install twine`
 
 `$ rm -rf ./dist/`
 
-`$ twine upload dist/* `
+`$ python setup.py sdist bdist_wheel`
 
+`$ twine upload dist/* `

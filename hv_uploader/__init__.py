@@ -80,6 +80,7 @@ __HV_UPLOADER_SERVICE_TOKEN = \
 
 __SUPPORTED_GENERATOR_SET = {
     "c-src",
+    "bela-src", "bela-linux-armv7a",
     "web-local", "web-js",
     "fabric-src", "fabric-macos-x64", "fabric-win-x86", "fabric-win-x64", "fabric-linux-x64", "fabric-android-armv7a",
     "unity-src", "unity-macos-x64", "unity-win-x86", "unity-win-x64", "unity-linux-x64", "unity-android-armv7a",

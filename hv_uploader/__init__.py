@@ -194,7 +194,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
 
             if token is None:
                 print "Please provide a user token from enzienaudio.com. " \
-                "Create or copy one from https://enzienaudio.com/h/<username>/settings."
+                "Create or copy one from https://enzienaudio.com/h/<username>/settings/tokens/."
                 token = getpass.getpass("Enter user token: ")
 
                 # write token to file

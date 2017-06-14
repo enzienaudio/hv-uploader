@@ -418,7 +418,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                         keep_files = ("_{0}.h".format(name), "_{0}.hpp".format(name), "_{0}.cpp".format(name))
                         for f in os.listdir(target_dir):
                             if not f.endswith(keep_files):
-                                os.remove(os.path.join(target_dir, f));
+                                os.remove(os.path.join(target_dir, f))
 
                     print "  * {0}: {1}".format(g, target_dir)
                 else:
@@ -439,7 +439,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         print "{0}Error:{1} Connection to server timed out. The server might be overloaded. Try again later?\n{2}".format(Colours.red, Colours.end, e)
         exit_code = ErrorCodes.CODE_CONNECTION_TIMEOUT
     except requests.HTTPError as e:
-        if e.response.status_code == requests.codes.unauthorized:
+        if e.response.status_code == requests.status_codes.codes.unauthorized:
             print "{0}Error:{1} Unknown username or password.".format(Colours.red, Colours.end)
         else:
             print "{0}Error:{1} An HTTP error has occurred with URL {2}\n{3}".format(Colours.red, Colours.end, e.request.path_url, e)

@@ -26,7 +26,6 @@ import datetime
 import getpass
 import json
 import os
-import requests
 import shutil
 import stat
 import sys
@@ -34,6 +33,8 @@ import tempfile
 import time
 import urlparse
 import zipfile
+
+import requests
 
 class Colours:
     purple = "\033[95m"
@@ -242,11 +243,14 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         else:
             service_token = __HV_UPLOADER_SERVICE_TOKEN
 
+        # create the session to pool all requests
+        s = requests.Session()
+
         # parse the optional release argument
         if release:
             if not release_override:
                 # check the validity of the current release
-                releases_json = requests.get(urlparse.urljoin(domain, "/a/releases/")).json()
+                releases_json = s.get(urlparse.urljoin(domain, "/a/releases/")).json()
                 if release in releases_json:
                     today = datetime.datetime.now()
                     valid_until = datetime.datetime.strptime(releases_json[release]["validUntil"], "%Y-%m-%d")
@@ -294,7 +298,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
         generators = list({s.lower() for s in set(generators or [])} & __SUPPORTED_GENERATOR_SET)
 
         # check if the patch exists already. Ask to create it if it doesn't exist
-        r = requests.get(
+        r = s.get(
             urlparse.urljoin(domain, "/a/patches/{0}/{1}/".format(owner, name)),
             headers={
                 "Accept": "application/json",
@@ -312,9 +316,9 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                     create_new_patch = raw_input("A patch called \"{0}\" does not exist for owner \"{1}\". Create it? (y/n):".format(name, owner))
                     create_new_patch = (create_new_patch == "y")
                 if create_new_patch:
-                    r = requests.post(
+                    r = s.post(
                         urlparse.urljoin(domain, "/a/patches/"),
-                        data={"owner_name":owner, "name":name},
+                        data={"owner_name":owner, "name":name, "public":"true"},
                         headers={
                             "Accept": "application/json",
                             "Authorization": "Bearer " + token,
@@ -340,7 +344,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
             pass # the patch exists, move on
 
         # upload the job, get the response back
-        r = requests.post(
+        r = s.post(
             urlparse.urljoin(domain, "/a/patches/{0}/{1}/jobs/".format(owner, name)),
             data=post_data,
             headers={
@@ -348,6 +352,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                 "Authorization": "Bearer " + token,
                 "X-Heavy-Service-Token": service_token
             },
+            timeout=None, # some builds can take a very long time
             files={"file": (os.path.basename(zip_path), open(zip_path, "rb"), "application/zip")})
         r.raise_for_status()
 
@@ -385,7 +390,7 @@ def upload(input_dir, output_dirs=None, name=None, owner=None, generators=None, 
                     ])
                 )
                 if file_url and (len(output_dirs) > i or b):
-                    r = requests.get(
+                    r = s.get(
                         file_url,
                         headers={
                             "Authorization": "Bearer " + token,

@@ -18,7 +18,7 @@ Python script for uploading and managing content on the Heavy Cloud Service (htt
 
 `$ pip install twine`
 
-Update the `version` string in [setup.py](https://github.com/enzienaudio/hv-uploader/blob/master/setup.py#L8)
+Update the `version` string in [setup.py](https://github.com/enzienaudio/hv-uploader/blob/master/setup.py#L8) to the date of version upload.
 
 `$ rm -rf ./dist/`
 

@@ -18,6 +18,8 @@ Python script for uploading and managing content on the Heavy Cloud Service (htt
 
 `$ pip install twine`
 
+Update the `version` string in [setup.py](https://github.com/enzienaudio/hv-uploader/blob/master/setup.py#L8)
+
 `$ rm -rf ./dist/`
 
 `$ python setup.py sdist bdist_wheel`

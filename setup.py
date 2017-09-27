@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(name="hv-uploader",
-      version="2017.06.15",
+      version="2017.09.27",
       description="Uploads content to the Heavy Cloud Service (https://enzienaudio.com).",
       long_description=readme(),
       classifiers=[
